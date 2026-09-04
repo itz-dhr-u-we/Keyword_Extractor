@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Keyword Extraction App</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 50px; background-color: #f4f4f9; }
+        .container { max-width: 600px; background: white; padding: 30px; border-radius: 8px; box-shadow: 0px 0px 10px rgba(0,0,0,0.1); }
+        textarea { width: 100%; height: 150px; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 4px; }
+        select { width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 4px; }
+        input[type="submit"] { background-color: #007BFF; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; }
+        input[type="submit"]:hover { background-color: #0056b3; }
+        .results { margin-top: 20px; background: #e9ecef; padding: 15px; border-radius: 4px; }
+        .badge { font-size: 0.9em; color: #333; background: #d1ecf1; padding: 5px 10px; border-radius: 4px; display: inline-block; margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Keyword Extraction Pipeline</h2>
+        <form action="/predict" method="POST">
+            <label for="message">Enter Text / Abstract:</label><br>
+            <textarea name="message" required></textarea><br>
+
+            <label for="mode">Extraction Mode (Optimization Router):</label><br>
+            <select name="mode">
+                <option value="auto">Auto (Adaptive based on length)</option>
+                <option value="fast">Fast Mode (TF-IDF Statistical)</option>
+                <option value="semantic">Semantic Mode (KeyBERT Transformer)</option>
+            </select><br>
+
+            <input type="submit" value="Extract Keywords">
+        </form>
+
+        {% if prediction %}
+            <div class="results">
+                {% if method_used %}
+                    <span class="badge">Engine Used: {{ method_used }}</span>
+                {% endif %}
+                
+                <h3>Extracted Keywords & Scores:</h3>
+                
+                {% if prediction is mapping %}
+                    <ul>
+                    {% for kw, score in prediction.items() %}
+                        <li><strong>{{ kw }}</strong>: `{{ score }}`</li>
+                    {% endfor %}
+                    </ul>
+                {% else %}
+                    <p style="color: #d9534f;">{{ prediction }}</p>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
