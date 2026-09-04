@@ -21,6 +21,7 @@ An end-to-end Natural Language Processing web application that contrasts traditi
 2. Create and activate a virtual environment:
    
     python -m venv venv
+   
     source venv/Scripts/activate
 4. Install dependencies:
    
